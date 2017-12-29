@@ -34,9 +34,11 @@ public class Task {
     public Task(String title, String description, LocalDateTime startDate, boolean completed, LocalDateTime endDate) {
         this.title = title;
         this.description = description;
-        this.startDate = startDate;
+        this.startDate = startDate.now();
         this.completed = completed;
-        this.endDate = endDate;
+        if (completed) {
+            this.endDate = endDate.now();
+        }
     }
 
     public void setId(Long id) {

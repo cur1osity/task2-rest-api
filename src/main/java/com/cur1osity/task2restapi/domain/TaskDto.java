@@ -19,9 +19,11 @@ public class TaskDto {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.startDate = startDate;
+        this.startDate = startDate.now();
         this.completed = completed;
-        this.endDate = endDate;
+        if (completed) {
+            this.endDate = endDate.now();
+        }
     }
 
     public Long getId() {

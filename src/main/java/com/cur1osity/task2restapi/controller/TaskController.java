@@ -35,12 +35,12 @@ public class TaskController {
         return taskMapper.mapToTaskDtoList(allTasks);
     }
 
-    @GetMapping({"/{id}"})
-    @ResponseStatus(HttpStatus.OK)
-    public TaskDto getTask(@PathVariable Long id) throws TaskNotFoundException {
-        final Task task = service.getTask(id).orElseThrow(TaskNotFoundException::new);
-        return taskMapper.mapToTaskDto(task);
-    }
+//    @GetMapping({"/{id}"})
+//    @ResponseStatus(HttpStatus.OK)
+//    public TaskDto getTask(@PathVariable Long id) throws TaskNotFoundException {
+//        final Task task = service.getTask(id).orElseThrow(TaskNotFoundException::new);
+//        return taskMapper.mapToTaskDto(task);
+//    }
 
     @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
