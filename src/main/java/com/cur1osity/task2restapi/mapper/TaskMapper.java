@@ -13,9 +13,7 @@ public class TaskMapper {
         return new Task (
                 taskDto.getTitle(),
                 taskDto.getDescription(),
-                taskDto.getStartDate(),
-                taskDto.isCompleted(),
-                taskDto.getEndDate()
+                taskDto.isCompleted()
         );
     }
 

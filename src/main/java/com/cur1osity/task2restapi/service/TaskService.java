@@ -4,8 +4,11 @@ import com.cur1osity.task2restapi.domain.Task;
 import com.cur1osity.task2restapi.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class TaskService {
@@ -22,6 +25,11 @@ public class TaskService {
     }
 
     public Task saveTask (final Task task) {
+
+        if(task.getStartDate() == null) {
+            task.setStartDate(dateFormatter().format(LocalDateTime.now()));
+        }
+
         return repository.save(task);
     }
 
@@ -47,6 +55,10 @@ public class TaskService {
 
     public void deleteAllTask() {
         repository.deleteAllInBatch();
+    }
+
+    private DateTimeFormatter dateFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
 
 }

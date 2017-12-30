@@ -1,29 +1,25 @@
 package com.cur1osity.task2restapi.domain;
 
-import java.time.LocalDateTime;
-
 public class TaskDto {
 
     private Long id;
     private String title;
     private String description;
-    private LocalDateTime startDate;
+    private String startDate;
     private boolean completed;
-    private LocalDateTime endDate;
+    private String endDate;
 
 
     public TaskDto() {
     }
 
-    public TaskDto(Long id, String title, String description, LocalDateTime startDate, boolean completed, LocalDateTime endDate) {
+    public TaskDto(Long id, String title, String description, String startDate, boolean completed, String endDate) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.startDate = startDate.now();
+        this.startDate = startDate;
         this.completed = completed;
-        if (completed) {
-            this.endDate = endDate.now();
-        }
+        this.endDate = endDate;
     }
 
     public Long getId() {
@@ -38,7 +34,7 @@ public class TaskDto {
         return description;
     }
 
-    public LocalDateTime getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
@@ -46,7 +42,7 @@ public class TaskDto {
         return completed;
     }
 
-    public LocalDateTime getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 }

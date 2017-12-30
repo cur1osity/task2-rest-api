@@ -35,12 +35,12 @@ public class TaskController {
         return taskMapper.mapToTaskDtoList(allTasks);
     }
 
-//    @GetMapping({"/{id}"})
-//    @ResponseStatus(HttpStatus.OK)
-//    public TaskDto getTask(@PathVariable Long id) throws TaskNotFoundException {
-//        final Task task = service.getTask(id).orElseThrow(TaskNotFoundException::new);
-//        return taskMapper.mapToTaskDto(task);
-//    }
+    @GetMapping({"/{id}"})
+    @ResponseStatus(HttpStatus.OK)
+    public TaskDto getTask(@PathVariable Long id) throws TaskNotFoundException {
+        final Task task = service.getTask(id).orElseThrow(TaskNotFoundException::new);
+        return taskMapper.mapToTaskDto(task);
+    }
 
     @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
@@ -54,6 +54,21 @@ public class TaskController {
     public TaskDto updateTask(@PathVariable Long id, @RequestBody TaskDto taskDto) throws TaskNotFoundException {
 
         Task task = taskMapper.mapToTask(taskDto);
+
+        Task taskAfterUpdate = service.updateTaskWithId(id, task);
+
+        return taskMapper.mapToTaskDto(taskAfterUpdate);
+    }
+
+    @PatchMapping(value = {"/{id}"}, consumes = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public TaskDto updateTask2(@PathVariable Long id, @RequestBody TaskDto taskDto) throws TaskNotFoundException {
+
+        final Task existingTask = service.getTask(id).orElseThrow(TaskNotFoundException::new);
+
+        Task task = taskMapper.mapToTask(taskDto);
+
+        task.setStartDate(existingTask.getStartDate());
 
         Task taskAfterUpdate = service.updateTaskWithId(id, task);
 

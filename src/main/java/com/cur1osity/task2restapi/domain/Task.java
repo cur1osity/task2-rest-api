@@ -7,10 +7,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "task")
 public class Task {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,24 +23,27 @@ public class Task {
     @Column(name = "description")
     private String description;
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private String startDate;
     @Column(name = "completed")
     private boolean completed;
     @Column(name = "completion_date")
-    private LocalDateTime endDate;
+    private String endDate;
 
     public Task() {
 
     }
 
-    public Task(String title, String description, LocalDateTime startDate, boolean completed, LocalDateTime endDate) {
+    public Task(String title, String description, boolean completed) {
         this.title = title;
         this.description = description;
-        this.startDate = startDate.now();
         this.completed = completed;
-        if (completed) {
-            this.endDate = endDate.now();
+        if(completed) {
+            this.endDate = dateFormatter().format(LocalDateTime.now());
         }
+    }
+
+    private DateTimeFormatter dateFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
 
     public void setId(Long id) {
@@ -65,11 +70,11 @@ public class Task {
         this.description = description;
     }
 
-    public LocalDateTime getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
@@ -81,11 +86,11 @@ public class Task {
         this.completed = completed;
     }
 
-    public LocalDateTime getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 }
