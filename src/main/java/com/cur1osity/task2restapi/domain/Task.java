@@ -24,6 +24,8 @@ public class Task {
     private String description;
     @Column(name = "start_date")
     private String startDate;
+    @Column(name = "last_modified")
+    private String updatedDate;
     @Column(name = "completed")
     private boolean completed;
     @Column(name = "completion_date")
@@ -44,6 +46,14 @@ public class Task {
 
     private DateTimeFormatter dateFormatter() {
         return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    }
+
+    public String getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(String updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public void setId(Long id) {

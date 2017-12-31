@@ -23,13 +23,14 @@ public class TaskMapper {
                 task.getTitle(),
                 task.getDescription(),
                 task.getStartDate(),
+                task.getUpdatedDate(),
                 task.isCompleted(),
                 task.getEndDate());
     }
 
     public List<TaskDto> mapToTaskDtoList (final List<Task> taskList) {
         return taskList.stream()
-                .map(t-> new TaskDto(t.getId(), t.getTitle(), t.getDescription(), t.getStartDate(), t.isCompleted(), t.getEndDate()))
+                .map(t-> new TaskDto(t.getId(), t.getTitle(), t.getDescription(), t.getStartDate(), t.getUpdatedDate(), t.isCompleted(), t.getEndDate()))
                 .collect(Collectors.toList());
     }
 }

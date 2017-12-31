@@ -39,6 +39,10 @@ public class TaskService {
 
             task.setId(id);
 
+            if(task.getUpdatedDate() == null) {
+                task.setUpdatedDate(dateFormatter().format(LocalDateTime.now()));
+            }
+
             return repository.save(task);
         }
 

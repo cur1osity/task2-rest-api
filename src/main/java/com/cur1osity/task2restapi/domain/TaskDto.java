@@ -6,6 +6,7 @@ public class TaskDto {
     private String title;
     private String description;
     private String startDate;
+    private String updatedDate;
     private boolean completed;
     private String endDate;
 
@@ -13,11 +14,12 @@ public class TaskDto {
     public TaskDto() {
     }
 
-    public TaskDto(Long id, String title, String description, String startDate, boolean completed, String endDate) {
+    public TaskDto(Long id, String title, String description, String startDate, String updatedDate, boolean completed, String endDate) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.startDate = startDate;
+        this.updatedDate = updatedDate;
         this.completed = completed;
         this.endDate = endDate;
     }
@@ -44,5 +46,9 @@ public class TaskDto {
 
     public String getEndDate() {
         return endDate;
+    }
+
+    public String getUpdatedDate() {
+        return updatedDate;
     }
 }
