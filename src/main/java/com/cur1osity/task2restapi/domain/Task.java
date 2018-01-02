@@ -32,21 +32,14 @@ public class Task {
     private String endDate;
 
     public Task() {
-
     }
 
     public Task(String title, String description, boolean completed) {
         this.title = title;
         this.description = description;
         this.completed = completed;
-        if(completed) {
-            this.endDate = dateFormatter().format(LocalDateTime.now());
-        }
     }
 
-    private DateTimeFormatter dateFormatter() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    }
 
     public String getUpdatedDate() {
         return updatedDate;

@@ -43,6 +43,10 @@ public class TaskService {
                 task.setUpdatedDate(dateFormatter().format(LocalDateTime.now()));
             }
 
+            if(task.isCompleted()) {
+                task.setEndDate(dateFormatter().format(LocalDateTime.now()));
+            }
+
             return repository.save(task);
         }
 
