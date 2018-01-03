@@ -1,14 +1,22 @@
 package com.cur1osity.task2restapi.controller;
 
+import com.cur1osity.task2restapi.domain.MessageDto;
 import com.cur1osity.task2restapi.domain.Task;
 import com.cur1osity.task2restapi.domain.TaskDto;
 import com.cur1osity.task2restapi.mapper.TaskMapper;
 import com.cur1osity.task2restapi.service.TaskNotFoundException;
 import com.cur1osity.task2restapi.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -21,6 +29,9 @@ public class TaskController {
 
     @Autowired
     private TaskMapper taskMapper;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -53,7 +64,7 @@ public class TaskController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTask(@RequestBody TaskDto taskDto) {
+    public void createTask(@Valid @RequestBody TaskDto taskDto) {
         final Task taskFromJSON = taskMapper.mapToTask(taskDto);
         service.saveTask(taskFromJSON);
     }
@@ -62,5 +73,13 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteTasks() {
         service.deleteAllTask();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public MessageDto handleValidationException(MethodArgumentNotValidException ex) {
+        Locale locale = LocaleContextHolder.getLocale();
+        String code = ex.getBindingResult().getFieldError().getDefaultMessage();
+        return new MessageDto(messageSource.getMessage(code, null, locale));
     }
 }
