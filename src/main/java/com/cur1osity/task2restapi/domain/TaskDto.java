@@ -1,16 +1,19 @@
 package com.cur1osity.task2restapi.domain;
 
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class TaskDto {
 
     private Long id;
-    @NotNull(message = "NotNull.taskDto.title")
-    @Size(min = 1, max = 64, message = "Size.taskDto.title")
+
+    @NotBlank(message = "NotBlank.taskDto.title")
+    @Size(min = 3, max = 64, message = "Size.taskDto.title")
     private String title;
-    @NotNull(message = "NotNull.taskDto.description")
-    @Size(min = 1, max = 255, message = "Size.taskDto.description")
+    @NotBlank(message = "NotBlank.taskDto.description")
+    @Size(min = 3, max = 255, message = "Size.taskDto.description")
     private String description;
     private String startDate;
     private String updatedDate;

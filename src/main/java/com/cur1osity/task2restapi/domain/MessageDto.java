@@ -1,19 +1,23 @@
 package com.cur1osity.task2restapi.domain;
 
-public class MessageDto {
-    private String message;
+import java.util.List;
 
-    public MessageDto(String message) {
-        this.message = message;
+public class MessageDto {
+
+    private List<String> messages;
+
+    public MessageDto(List<String> messages) {
+        this.messages = messages;
     }
 
     public MessageDto() {
     }
 
-    public String getMessage() {
-        return message;
+    public List<String> getMessages() {
+        return messages;
     }
-    public void setMessage(String message) {
-        this.message = message;
+
+    public void setMessages(List<String> messages) {
+        this.messages = messages;
     }
 }
