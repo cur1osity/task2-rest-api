@@ -56,7 +56,7 @@ public class TaskController {
 
     @PatchMapping(value = {"/{id}"}, consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto updateTask(@PathVariable Long id, @RequestBody TaskDto taskDto) throws TaskNotFoundException {
+    public TaskDto updateTask(@PathVariable Long id, @Valid @RequestBody TaskDto taskDto) throws TaskNotFoundException {
         Task task = taskMapper.mapToTask(taskDto);
         Task taskAfterUpdate = service.saveTaskWithId(id, task);
         return taskMapper.mapToTaskDto(taskAfterUpdate);

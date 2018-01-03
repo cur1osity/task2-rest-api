@@ -2,7 +2,6 @@ package com.cur1osity.task2restapi.domain;
 
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class TaskDto {
