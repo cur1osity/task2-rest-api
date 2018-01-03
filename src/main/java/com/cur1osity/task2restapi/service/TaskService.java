@@ -57,20 +57,20 @@ public class TaskService {
         throw new TaskNotFoundException();
     }
 
-    public void deleteTask(Long id) throws TaskNotFoundException {
+    public void deleteTask(Long id) {
 
         if(isTaskExist(id)) {
             repository.deleteById(id);
+        } else {
+            throw new TaskNotFoundException();
         }
-
-        throw new TaskNotFoundException();
     }
 
     public void deleteAllTask() {
         repository.deleteAllInBatch();
     }
 
-    public boolean isTaskExist(Long id) {
+    private boolean isTaskExist(Long id) {
         return repository.existsById(id);
     }
 
