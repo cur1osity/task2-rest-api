@@ -33,11 +33,15 @@ public class TaskService {
         return repository.save(task);
     }
 
-    public Task updateTaskWithId(Long id, Task task) throws TaskNotFoundException {
+    public Task saveTaskWithId(Long id, Task task) throws TaskNotFoundException {
 
-        if(repository.existsById(id)) {
+        if(isTaskExist(id)) {
 
             task.setId(id);
+
+            if(task.getStartDate() == null) {
+                task.setStartDate(repository.getOne(id).getStartDate());
+            }
 
             if(task.getUpdatedDate() == null) {
                 task.setUpdatedDate(dateFormatter().format(LocalDateTime.now()));
@@ -53,16 +57,21 @@ public class TaskService {
         throw new TaskNotFoundException();
     }
 
-    public boolean isTaskExist(Long id) {
-        return repository.existsById(id);
-    }
+    public void deleteTask(Long id) throws TaskNotFoundException {
 
-    public void deleteTask(Long id) {
-        repository.deleteById(id);
+        if(isTaskExist(id)) {
+            repository.deleteById(id);
+        }
+
+        throw new TaskNotFoundException();
     }
 
     public void deleteAllTask() {
         repository.deleteAllInBatch();
+    }
+
+    public boolean isTaskExist(Long id) {
+        return repository.existsById(id);
     }
 
     private DateTimeFormatter dateFormatter() {

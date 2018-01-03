@@ -6,13 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
-@Table(name = "task")
+@Table(name = "tasks")
 public class Task {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
