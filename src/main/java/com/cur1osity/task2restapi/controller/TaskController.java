@@ -1,5 +1,6 @@
 package com.cur1osity.task2restapi.controller;
 
+import com.cur1osity.task2restapi.customvalidator.PathValidator;
 import com.cur1osity.task2restapi.domain.MessageDto;
 import com.cur1osity.task2restapi.domain.Task;
 import com.cur1osity.task2restapi.domain.TaskDto;
@@ -10,16 +11,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
+@Validated
 @RequestMapping("/v1/tasks")
 @CrossOrigin(origins = "*")
 public class TaskController {
@@ -42,21 +49,21 @@ public class TaskController {
 
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto getTask(@PathVariable Long id) throws TaskNotFoundException {
-        final Task task = service.getTask(id).orElseThrow(TaskNotFoundException::new);
+    public TaskDto getTask(@PathValidator @PathVariable Long id) {
+        final Task task = service.getTask2(id);
         return taskMapper.mapToTaskDto(task);
     }
 
     @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteTask(@PathVariable Long id) throws TaskNotFoundException {
+    public void deleteTask(@PathValidator @PathVariable Long id) throws TaskNotFoundException {
 
         service.deleteTask(id);
     }
 
     @PatchMapping(value = {"/{id}"}, consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto updateTask(@PathVariable Long id, @Valid @RequestBody TaskDto taskDto) throws TaskNotFoundException {
+    public TaskDto updateTask(@PathValidator @PathVariable Long id, @Valid @RequestBody TaskDto taskDto) throws TaskNotFoundException {
         Task task = taskMapper.mapToTask(taskDto);
         Task taskAfterUpdate = service.saveTaskWithId(id, task);
         return taskMapper.mapToTaskDto(taskAfterUpdate);
@@ -86,5 +93,16 @@ public class TaskController {
         return new MessageDto(errorMessages);
     }
 
-
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public MessageDto handle(ConstraintViolationException e) {
+        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+        StringBuilder strBuilder = new StringBuilder();
+        for (ConstraintViolation<?> violation : violations ) {
+            strBuilder.append(violation.getMessage());
+        }
+        List<String> errorList = new ArrayList<>();
+        errorList.add(strBuilder.toString());
+        return new MessageDto(errorList);
+    }
 }

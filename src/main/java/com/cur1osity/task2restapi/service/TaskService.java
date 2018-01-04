@@ -24,6 +24,10 @@ public class TaskService {
         return repository.findById(id);
     }
 
+    public Task getTask2(Long id) {
+        return repository.getOne(id);
+    }
+
     public Task saveTask (final Task task) {
 
         if(task.getStartDate() == null) {
@@ -57,7 +61,7 @@ public class TaskService {
         throw new TaskNotFoundException();
     }
 
-    public void deleteTask(Long id) {
+    public void deleteTask(Long id) throws TaskNotFoundException {
 
         if(isTaskExist(id)) {
             repository.deleteById(id);
