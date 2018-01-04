@@ -4,11 +4,10 @@ import com.cur1osity.task2restapi.domain.Task;
 import com.cur1osity.task2restapi.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
-
 
 @Service
 public class TaskService {
@@ -20,62 +19,45 @@ public class TaskService {
         return repository.findAll();
     }
 
-    public Optional<Task> getTask(Long id) {
-        return repository.findById(id);
-    }
-
-    public Task getTask2(Long id) {
+    public Task getTask(Long id) {
         return repository.getOne(id);
     }
 
-    public Task saveTask (final Task task) {
+    public Task saveTask(final Task task) {
 
-        if(task.getStartDate() == null) {
+        if (task.getStartDate() == null) {
             task.setStartDate(dateFormatter().format(LocalDateTime.now()));
         }
 
         return repository.save(task);
     }
 
-    public Task saveTaskWithId(Long id, Task task) throws TaskNotFoundException {
+    public Task saveTaskWithId(Long id, Task task) {
 
-        if(isTaskExist(id)) {
+        task.setId(id);
 
-            task.setId(id);
-
-            if(task.getStartDate() == null) {
-                task.setStartDate(repository.getOne(id).getStartDate());
-            }
-
-            if(task.getUpdatedDate() == null) {
-                task.setUpdatedDate(dateFormatter().format(LocalDateTime.now()));
-            }
-
-            if(task.isCompleted()) {
-                task.setEndDate(dateFormatter().format(LocalDateTime.now()));
-            }
-
-            return repository.save(task);
+        if (task.getStartDate() == null) {
+            task.setStartDate(repository.getOne(id).getStartDate());
         }
 
-        throw new TaskNotFoundException();
+        if (task.getUpdatedDate() == null) {
+            task.setUpdatedDate(dateFormatter().format(LocalDateTime.now()));
+        }
+
+        if (task.isCompleted()) {
+            task.setEndDate(dateFormatter().format(LocalDateTime.now()));
+        }
+
+        return repository.save(task);
     }
 
-    public void deleteTask(Long id) throws TaskNotFoundException {
+    public void deleteTask(Long id) {
 
-        if(isTaskExist(id)) {
-            repository.deleteById(id);
-        } else {
-            throw new TaskNotFoundException();
-        }
+        repository.deleteById(id);
     }
 
     public void deleteAllTask() {
         repository.deleteAllInBatch();
-    }
-
-    private boolean isTaskExist(Long id) {
-        return repository.existsById(id);
     }
 
     private DateTimeFormatter dateFormatter() {

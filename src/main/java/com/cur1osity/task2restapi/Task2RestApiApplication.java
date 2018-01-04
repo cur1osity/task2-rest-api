@@ -10,5 +10,4 @@ public class Task2RestApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(Task2RestApiApplication.class, args);
 	}
-
 }

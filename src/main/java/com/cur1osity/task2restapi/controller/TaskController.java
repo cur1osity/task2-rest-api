@@ -5,7 +5,6 @@ import com.cur1osity.task2restapi.domain.MessageDto;
 import com.cur1osity.task2restapi.domain.Task;
 import com.cur1osity.task2restapi.domain.TaskDto;
 import com.cur1osity.task2restapi.mapper.TaskMapper;
-import com.cur1osity.task2restapi.service.TaskNotFoundException;
 import com.cur1osity.task2restapi.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -50,20 +49,20 @@ public class TaskController {
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public TaskDto getTask(@PathValidator @PathVariable Long id) {
-        final Task task = service.getTask2(id);
+        final Task task = service.getTask(id);
         return taskMapper.mapToTaskDto(task);
     }
 
     @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteTask(@PathValidator @PathVariable Long id) throws TaskNotFoundException {
+    public void deleteTask(@PathValidator @PathVariable Long id) {
 
         service.deleteTask(id);
     }
 
     @PatchMapping(value = {"/{id}"}, consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto updateTask(@PathValidator @PathVariable Long id, @Valid @RequestBody TaskDto taskDto) throws TaskNotFoundException {
+    public TaskDto updateTask(@PathValidator @PathVariable Long id, @Valid @RequestBody TaskDto taskDto) {
         Task task = taskMapper.mapToTask(taskDto);
         Task taskAfterUpdate = service.saveTaskWithId(id, task);
         return taskMapper.mapToTaskDto(taskAfterUpdate);
