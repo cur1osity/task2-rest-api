@@ -92,8 +92,8 @@ public class TaskController {
         return new MessageDto(errorMessages);
     }
 
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public MessageDto handle(ConstraintViolationException e) {
         Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
         StringBuilder strBuilder = new StringBuilder();
