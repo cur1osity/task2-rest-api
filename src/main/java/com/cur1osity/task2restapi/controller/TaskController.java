@@ -6,6 +6,8 @@ import com.cur1osity.task2restapi.domain.Task;
 import com.cur1osity.task2restapi.domain.TaskDto;
 import com.cur1osity.task2restapi.mapper.TaskMapper;
 import com.cur1osity.task2restapi.service.TaskService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/v1/tasks")
 @CrossOrigin(origins = "*")
 public class TaskController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskController.class);
 
     @Autowired
     private TaskService service;
@@ -89,6 +93,7 @@ public class TaskController {
                 .stream()
                 .map(objectError -> messageSource.getMessage(objectError, locale))
                 .collect(Collectors.toList());
+        LOGGER.error(ex.getMessage(), ex);
         return new MessageDto(errorMessages);
     }
 
@@ -102,6 +107,7 @@ public class TaskController {
         }
         List<String> errorList = new ArrayList<>();
         errorList.add(strBuilder.toString());
+        LOGGER.error(e.getMessage(), e);
         return new MessageDto(errorList);
     }
 }
