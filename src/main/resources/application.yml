@@ -2,6 +2,9 @@ spring:
   messages:
     basename: messages/messages
     encoding: UTF-8
+  application:
+    name:
+      task-api-service
 
 ---
 
@@ -18,4 +21,10 @@ spring:
    encoding: UTF-8
 server:
     port: ${API_PORT}
+eureka:
+    client:
+      serviceUrl:
+        defaultZone:
+          http://${EUREKA_HOSTNAME}:${EUREKA_PORT}/eureka
+
 
