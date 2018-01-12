@@ -1,5 +1,7 @@
 package com.cur1osity.task2restapi.service;
 
+import com.cur1osity.task2restapi.config.AdminConfig;
+import com.cur1osity.task2restapi.domain.Mail;
 import com.cur1osity.task2restapi.domain.Task;
 import com.cur1osity.task2restapi.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +11,21 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static java.util.Optional.ofNullable;
+
 @Service
 public class TaskService {
 
+    private static final String SUBJECT = "New TASK was created!";
+
     @Autowired
     private TaskRepository repository;
+
+    @Autowired
+    private SimpleEmailService emailService;
+
+    @Autowired
+    private AdminConfig adminConfig;
 
     public List<Task> getAllTasks() {
         return repository.findAll();
@@ -28,6 +40,15 @@ public class TaskService {
         if (task.getStartDate() == null) {
             task.setStartDate(dateFormatter().format(LocalDateTime.now()));
         }
+
+        ofNullable(task).ifPresent(
+                taskX -> emailService.send(
+                        new Mail(
+                                adminConfig.getAdminMail(),
+                         //       adminConfig.getSecondEmail(),
+                                SUBJECT,
+                                "[Task title]: " + task.getTitle() + "\n" +
+                        "[Task desc]: " + task.getDescription())));
 
         return repository.save(task);
     }
