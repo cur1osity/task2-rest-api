@@ -22,9 +22,13 @@ spring:
 server:
     port: ${API_PORT}
 eureka:
+    instance:
+      ip-address: ${EUREKA_HOSTNAME}
+      prefer-ip-address: true
+      status-page-url-path: /actuator/info
     client:
       serviceUrl:
         defaultZone:
-          http://${EUREKA_HOSTNAME}:${EUREKA_PORT}/eureka
+          http://${EUREKA_HOSTNAME}:8761/eureka
 
 
