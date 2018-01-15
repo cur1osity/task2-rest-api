@@ -4,19 +4,15 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-
 @Documented
 @Constraint(validatedBy = CustomPathValidator.class)
 @Target({ ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PathValidator {
 
-    public long value() default 1L;
-
-    public String message() default "Task doesn't exist !";
-
-    public Class<?>[] groups() default {};
-
-    public Class<? extends Payload>[] payload() default {};
+     long value() default 1L;
+     String message() default "Task doesn't exist !";
+     Class<?>[] groups() default {};
+     Class<? extends Payload>[] payload() default {};
 }
 

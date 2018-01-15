@@ -14,9 +14,7 @@ public class CustomPathValidator implements ConstraintValidator <PathValidator, 
 
     @Override
     public void initialize(PathValidator pathValidator) {
-
         path = pathValidator.value();
-
     }
 
     @Override
@@ -25,9 +23,7 @@ public class CustomPathValidator implements ConstraintValidator <PathValidator, 
         boolean result;
 
         if (value != null) {
-
             result = repository.existsById(value);
-
         } else {
             result = true;
         }
